@@ -9,49 +9,74 @@
             --primary-color: #2c3e50;
             --secondary-color: #34495e;
             --accent-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            margin: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
             padding: 20px;
-            background-color: #f8f9fa;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            position: relative;
+            top: 20px;
         }
 
         h2, h3 {
             color: var(--primary-color);
             text-align: center;
             margin-bottom: 30px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
-            background-color: white;
+            margin: 30px 0;
+            box-shadow: var(--shadow);
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
         }
 
         th, td {
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
             text-align: center;
+            font-size: 16px;
         }
 
         th {
             background-color: var(--primary-color);
             color: white;
-            font-weight: bold;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        tr {
+            transition: background-color 0.3s ease;
         }
 
         tr:hover {
-            background-color: #f5f5f5;
+            background-color: #f9f9f9;
         }
 
         .remove {
@@ -59,49 +84,61 @@
             color: white;
             border: none;
             padding: 8px 15px;
-            border-radius: 4px;
+            border-radius: 20px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: transform 0.3s, background-color 0.3s;
             display: none;
         }
 
         .remove:hover {
             background-color: #c0392b;
+            transform: scale(1.05);
         }
 
         #managementSection {
             display: none;
+            margin-top: 40px;
         }
 
         #accessForm {
-            background-color: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background-color: #f5f7fa;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
             max-width: 600px;
             margin: 20px auto;
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             color: var(--secondary-color);
             font-weight: 600;
+            font-size: 16px;
         }
 
         input[type="text"],
         input[type="password"],
         input[type="url"] {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
             box-sizing: border-box;
             margin-bottom: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        input[type="url"]:focus {
+            border-color: var(--primary-color);
+            outline: none;
         }
 
         button[type="submit"] {
@@ -109,24 +146,29 @@
             color: white;
             padding: 12px 25px;
             border: none;
-            border-radius: 4px;
+            border-radius: 25px;
             cursor: pointer;
             width: 100%;
             font-size: 16px;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         button[type="submit"]:hover {
             background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .map-link {
             color: #2980b9;
             text-decoration: none;
             font-weight: 500;
+            transition: color 0.3s;
         }
 
         .map-link:hover {
+            color: #1f6ea6;
             text-decoration: underline;
         }
 
@@ -138,11 +180,15 @@
             font-size: 16px;
             cursor: pointer;
             transition: all 0.3s;
+            display: block;
+            margin: 0 auto;
+            box-shadow: var(--shadow);
         }
 
         .admin-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+            background-color: var(--secondary-color);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
@@ -192,6 +238,7 @@
     </div>
 
     <script>
+        // (السكربت يبقى كما هو مع بعض التعديلات البسيطة لتوافق التصميم الجديد)
         (function() {
             const STORAGE_KEY = 'miitoo_locations_v2';
             const credentials = {
@@ -202,13 +249,11 @@
             let isAuthenticated = false;
             let locations = [];
 
-            // تحميل البيانات الأولية
             function loadLocations() {
                 const savedData = localStorage.getItem(STORAGE_KEY);
                 if (savedData) {
                     locations = JSON.parse(savedData);
                 } else {
-                    // بيانات افتراضية
                     locations = [
                         {
                             name: 'هاي كلاس',
@@ -298,7 +343,6 @@
                 alert("تمت الإضافة بنجاح!");
             });
 
-            // التهيئة الأولية
             loadLocations();
         })();
     </script>
