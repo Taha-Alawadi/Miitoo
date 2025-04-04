@@ -62,7 +62,7 @@
             border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s;
-            display: none; /* مخفية بشكل افتراضي */
+            display: none;
         }
 
         .remove:hover {
@@ -70,7 +70,7 @@
         }
 
         #managementSection {
-            display: none; /* قسم الإدارة مخفي */
+            display: none;
         }
 
         #accessForm {
@@ -144,28 +144,16 @@
             transform: translateY(-2px);
             box-shadow: 0 3px 6px rgba(0,0,0,0.16);
         }
-
-        @media (max-width: 768px) {
-            table {
-                font-size: 14px;
-            }
-            
-            th, td {
-                padding: 8px;
-            }
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>نقاط البيع - Miitoo</h2>
         
-        <!-- زر الدخول للإدارة -->
         <div style="text-align:center; margin:30px 0;">
             <button id="adminLoginBtn" class="admin-btn">الدخول إلى لوحة التحكم</button>
         </div>
 
-        <!-- جدول البيانات -->
         <table id="locationsTable">
             <thead>
                 <tr>
@@ -176,17 +164,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>هاي كلاس</td>
-                    <td>الحي الراقي</td>
-                    <td><a class="map-link" href="https://maps.app.goo.gl/ZZqUdfhTcsYVR18YA" target="_blank">عرض الخريطة</a></td>
-                    <td><button class="remove">حذف</button></td>
-                </tr>
-                <!-- باقي الصفوف -->
+                <!-- سيتم تعبئة البيانات تلقائيا -->
             </tbody>
         </table>
 
-        <!-- قسم الإدارة المخفي -->
         <div id="managementSection">
             <h3>إدارة المواقع</h3>
             <form id="accessForm">
@@ -212,55 +193,92 @@
 
     <script>
         (function() {
+            const STORAGE_KEY = 'miitoo_locations_v2';
             const credentials = {
                 username: "miitooAdmin2025",
                 password: "securePass@321"
             };
 
             let isAuthenticated = false;
+            let locations = [];
 
-            // مصادقة المسؤول
-            document.getElementById('adminLoginBtn').addEventListener('click', function() {
+            // تحميل البيانات الأولية
+            function loadLocations() {
+                const savedData = localStorage.getItem(STORAGE_KEY);
+                if (savedData) {
+                    locations = JSON.parse(savedData);
+                } else {
+                    // بيانات افتراضية
+                    locations = [
+                        {
+                            name: 'هاي كلاس',
+                            address: 'الحي الراقي',
+                            mapLink: 'https://maps.app.goo.gl/ZZqUdfhTcsYVR18YA'
+                        },
+                        {
+                            name: 'إب هاري',
+                            address: 'شارع الجامعة',
+                            mapLink: 'https://maps.app.goo.gl/S4D37ZzMZuCXD4CN7'
+                        }
+                    ];
+                    saveLocations();
+                }
+                renderLocations();
+            }
+
+            function saveLocations() {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(locations));
+            }
+
+            function renderLocations() {
+                const tbody = document.querySelector('#locationsTable tbody');
+                tbody.innerHTML = locations.map((location, index) => `
+                    <tr data-index="${index}">
+                        <td>${location.name}</td>
+                        <td>${location.address}</td>
+                        <td><a class="map-link" href="${location.mapLink}" target="_blank">عرض الخريطة</a></td>
+                        <td><button class="remove">حذف</button></td>
+                    </tr>
+                `).join('');
+
+                document.querySelectorAll('.remove').forEach(btn => {
+                    btn.style.display = isAuthenticated ? 'inline-block' : 'none';
+                });
+            }
+
+            document.getElementById('adminLoginBtn').addEventListener('click', () => {
                 const user = prompt("اسم المستخدم:");
                 const pass = prompt("كلمة المرور:");
                 
-                if(user === credentials.username && pass === credentials.password) {
+                if (user === credentials.username && pass === credentials.password) {
                     isAuthenticated = true;
-                    toggleAdminPanel(true);
+                    document.getElementById('managementSection').style.display = 'block';
+                    document.querySelectorAll('.remove').forEach(btn => {
+                        btn.style.display = 'inline-block';
+                    });
                     alert("مرحبا بك في لوحة التحكم!");
                 } else {
                     alert("بيانات الدخول غير صحيحة!");
                 }
             });
 
-            // تبديل حالة لوحة التحكم
-            function toggleAdminPanel(show) {
-                document.getElementById('managementSection').style.display = show ? 'block' : 'none';
-                document.querySelectorAll('.remove').forEach(btn => {
-                    btn.style.display = show ? 'inline-block' : 'none';
-                });
-            }
-
-            // معالجة الحذف
-            document.querySelectorAll('.remove').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    if(!isAuthenticated) {
-                        alert('يجب تسجيل الدخول أولا!');
-                        return;
-                    }
-                    
-                    if(confirm('هل أنت متأكد من الحذف؟')) {
-                        e.target.closest('tr').remove();
-                    }
-                });
+            document.querySelector('#locationsTable').addEventListener('click', (e) => {
+                if (!e.target.classList.contains('remove') || !isAuthenticated) return;
+                
+                const index = e.target.closest('tr').dataset.index;
+                if (confirm('هل أنت متأكد من الحذف؟')) {
+                    locations.splice(index, 1);
+                    saveLocations();
+                    renderLocations();
+                    alert("تم الحذف بنجاح!");
+                }
             });
 
-            // معالجة الإضافة
-            document.getElementById('accessForm').addEventListener('submit', function(e) {
+            document.getElementById('accessForm').addEventListener('submit', (e) => {
                 e.preventDefault();
                 
-                if(!isAuthenticated) {
-                    alert('يجب تسجيل الدخول أولا!');
+                if (!isAuthenticated) {
+                    alert('يجب تسجيل الدخول أولاً!');
                     return;
                 }
 
@@ -268,30 +286,20 @@
                 const address = document.getElementById('address').value.trim();
                 const mapLink = document.getElementById('mapLink').value.trim();
 
-                if(!storeName || !address || !mapLink) {
+                if (!storeName || !address || !mapLink) {
                     alert("يرجى ملء جميع الحقول!");
                     return;
                 }
 
-                const newRow = document.createElement('tr');
-                newRow.innerHTML = `
-                    <td>${storeName}</td>
-                    <td>${address}</td>
-                    <td><a class="map-link" href="${mapLink}" target="_blank">عرض الخريطة</a></td>
-                    <td><button class="remove">حذف</button></td>
-                `;
-
-                // إضافة حدث الحذف للعنصر الجديد
-                newRow.querySelector('.remove').addEventListener('click', function(e) {
-                    if(confirm('هل أنت متأكد من الحذف؟')) {
-                        e.target.closest('tr').remove();
-                    }
-                });
-
-                document.querySelector('#locationsTable tbody').appendChild(newRow);
-                this.reset();
+                locations.push({ name: storeName, address, mapLink });
+                saveLocations();
+                renderLocations();
+                e.target.reset();
                 alert("تمت الإضافة بنجاح!");
             });
+
+            // التهيئة الأولية
+            loadLocations();
         })();
     </script>
 </body>
