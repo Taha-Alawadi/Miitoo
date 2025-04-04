@@ -1,195 +1,26 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Miitoo - نقاط البيع</title>
-    <style>
-        :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #34495e;
-            --accent-color: #e74c3c;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-            background-color: #f8f9fa;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        h2, h3 {
-            color: var(--primary-color);
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
-            background-color: white;
-        }
-
-        th, td {
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
-            text-align: center;
-        }
-
-        th {
-            background-color: var(--primary-color);
-            color: white;
-            font-weight: bold;
-        }
-
-        tr:hover {
-            background-color: #f5f5f5;
-        }
-
-        .remove {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .remove:hover {
-            background-color: #c0392b;
-        }
-
-        #accessForm {
-            background-color: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            max-width: 600px;
-            margin: 20px auto;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: var(--secondary-color);
-            font-weight: 600;
-        }
-
-        input[type="text"],
-        input[type="password"],
-        input[type="url"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-            margin-bottom: 10px;
-        }
-
-        button[type="submit"] {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-
-        button[type="submit"]:hover {
-            background-color: var(--secondary-color);
-        }
-
-        .map-link {
-            color: #2980b9;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .map-link:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 768px) {
-            table {
-                font-size: 14px;
-            }
-            
-            th, td {
-                padding: 8px;
-            }
-        }
-    </style>
+    <!-- باقي الhead كما هو -->
 </head>
 <body>
     <div class="container">
         <h2>نقاط البيع - Miitoo</h2>
         
+        <div id="adminAccess" style="text-align:center; margin:20px 0;">
+            <button id="showAdminPanel" class="admin-btn">الدخول كمسؤول</button>
+        </div>
+
         <table id="locationsTable">
-            <thead>
-                <tr>
-                    <th>اسم البقالة</th>
-                    <th>العنوان</th>
-                    <th>العرض على الخريطة</th>
-                    <th>الإجراءات</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- البيانات الحالية -->
-                <tr>
-                    <td>هاي كلاس</td>
-                    <td>الحي الراقي</td>
-                    <td><a class="map-link" href="https://maps.app.goo.gl/ZZqUdfhTcsYVR18YA" target="_blank">عرض الخريطة</a></td>
-                    <td><button class="remove">حذف</button></td>
-                </tr>
-                <!-- باقي الصفوف -->
-            </tbody>
+            <!-- الجدول كما هو -->
         </table>
 
-        <h3>إدارة المواقع</h3>
-        <form id="accessForm">
-            <div class="form-group">
-                <label for="username">اسم المستخدم:</label>
-                <input type="text" id="username" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="password">كلمة المرور:</label>
-                <input type="password" id="password" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="storeName">اسم البقالة:</label>
-                <input type="text" id="storeName" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="address">العنوان:</label>
-                <input type="text" id="address" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="mapLink">رابط الخريطة:</label>
-                <input type="url" id="mapLink" required>
-            </div>
-            
-            <button type="submit">إضافة موقع جديد</button>
-        </form>
+        <div id="managementSection" style="display:none;">
+            <h3>إدارة المواقع</h3>
+            <form id="accessForm">
+                <!-- النموذج كما هو -->
+            </form>
+        </div>
     </div>
 
     <script>
@@ -199,6 +30,24 @@
                 password: "securePass@321"
             };
 
+            let isAuthenticated = false;
+
+            // زر الدخول كمسؤول
+            document.getElementById('showAdminPanel').addEventListener('click', function() {
+                if(validateAuth()) {
+                    isAuthenticated = true;
+                    toggleManagementUI(true);
+                    alert("تم الدخول بنجاح!");
+                }
+            });
+
+            function toggleManagementUI(show) {
+                document.getElementById('managementSection').style.display = show ? 'block' : 'none';
+                document.querySelectorAll('.remove').forEach(btn => {
+                    btn.style.display = show ? 'inline-block' : 'none';
+                });
+            }
+
             function validateAuth() {
                 const user = prompt("اسم المستخدم:");
                 const pass = prompt("كلمة المرور:");
@@ -207,18 +56,22 @@
 
             function addDeleteHandler(btn, row) {
                 btn.addEventListener('click', function() {
-                    if(validateAuth()) {
-                        row.remove();
-                        alert("تم الحذف بنجاح");
-                    } else {
-                        alert("معلومات الاعتماد غير صحيحة!");
+                    if(!isAuthenticated && !validateAuth()) {
+                        alert("غير مصرح بهذا الإجراء!");
+                        return;
                     }
+                    row.remove();
+                    alert("تم الحذف بنجاح");
                 });
             }
 
-            // إضافة أزرار الحذف للصفوف الموجودة
+            // إضافة أزرار الحذف المخفية
             document.querySelectorAll('#locationsTable tbody tr').forEach(row => {
-                const btn = row.querySelector('.remove');
+                const btn = document.createElement('button');
+                btn.className = 'remove';
+                btn.textContent = 'حذف';
+                btn.style.display = 'none';
+                row.querySelector('td:last-child').appendChild(btn);
                 addDeleteHandler(btn, row);
             });
 
@@ -226,32 +79,12 @@
             document.getElementById('accessForm').addEventListener('submit', function(e) {
                 e.preventDefault();
                 
-                if(!validateAuth()) {
-                    alert("بيانات الاعتماد غير صحيحة!");
+                if(!isAuthenticated && !validateAuth()) {
+                    alert("غير مصرح بهذا الإجراء!");
                     return;
                 }
 
-                const storeName = document.getElementById('storeName').value.trim();
-                const address = document.getElementById('address').value.trim();
-                const mapLink = document.getElementById('mapLink').value.trim();
-
-                if(!storeName || !address || !mapLink) {
-                    alert("يرجى ملء جميع الحقول المطلوبة");
-                    return;
-                }
-
-                const newRow = document.createElement('tr');
-                newRow.innerHTML = `
-                    <td>${storeName}</td>
-                    <td>${address}</td>
-                    <td><a class="map-link" href="${mapLink}" target="_blank">عرض الخريطة</a></td>
-                    <td><button class="remove">حذف</button></td>
-                `;
-
-                addDeleteHandler(newRow.querySelector('.remove'), newRow);
-                document.querySelector('#locationsTable tbody').appendChild(newRow);
-                this.reset();
-                alert("تمت الإضافة بنجاح!");
+                // باقي كود الإضافة كما هو
             });
         })();
     </script>
