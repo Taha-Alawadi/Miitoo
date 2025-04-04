@@ -1,123 +1,259 @@
-<!DOCTYPE html><html lang="ar">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Miitoo - نقاط البيع</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            direction: rtl;
-            text-align: right;
-            margin: 20px;
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #e74c3c;
         }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h2, h3 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+            background-color: white;
         }
+
         th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
             text-align: center;
         }
+
         th {
-            background-color: #f4f4f4;
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
         }
-        button.remove {
-            background-color: red;
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .remove {
+            background-color: var(--accent-color);
             color: white;
             border: none;
-            padding: 5px 10px;
+            padding: 8px 15px;
+            border-radius: 4px;
             cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .remove:hover {
+            background-color: #c0392b;
+        }
+
+        #accessForm {
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="url"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        button[type="submit"] {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .map-link {
+            color: #2980b9;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .map-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            table {
+                font-size: 14px;
+            }
+            
+            th, td {
+                padding: 8px;
+            }
         }
     </style>
 </head>
 <body>
-    <h2>نقاط البيع - Miitoo</h2>
-    <table id="locationsTable">
-        <tr>
-            <th>اسم البقالة</th>
-            <th>العنوان</th>
-            <th>العرض على الخريطة</th>
-            <th>حذف</th>
-        </tr>
-        <tr><td>هاي كلاس</td><td>الحي الراقي</td><td><a href="https://maps.app.goo.gl/ZZqUdfhTcsYVR18YA" target="_blank">عرض</a></td><td></td></tr>
-        <tr><td>إب هاري</td><td>شارع الجامعة</td><td><a href="https://maps.app.goo.gl/S4D37ZzMZuCXD4CN7" target="_blank">عرض</a></td><td></td></tr>
-        <tr><td>سوبر ماركت الملكة اروى</td><td>شارع الملكة اروى</td><td><a href="https://maps.app.goo.gl/yR2ERZWFaZfW8Cpt8" target="_blank">عرض</a></td><td></td></tr>
-        <tr><td>هلا توفير</td><td>امام جامع الرحمن</td><td><a href="https://maps.app.goo.gl/tgGut38vcGwuUbeLA" target="_blank">عرض</a></td><td></td></tr>
-        <tr><td>بقالة مكة</td><td>امام امين بيتزا</td><td><a href="https://maps.app.goo.gl/S9izMSqLcDPqdYs38" target="_blank">عرض</a></td><td></td></tr>
-        <tr><td>بقالة الوحدة</td><td>امام مدرسة الشهيد الصباحي</td><td><a href="https://maps.app.goo.gl/hygjQwTSa3aRNNy38" target="_blank">عرض</a></td><td></td></tr>
-        <tr><td>بقالة القاسم</td><td>شارع المحافظة</td><td><a href="https://maps.app.goo.gl/WuNpFRXCh3HutHzr6" target="_blank">عرض</a></td><td></td></tr>
-        <tr><td>بقالة السلام</td><td>الدائري</td><td><a href="https://maps.app.goo.gl/fMK5oTQnR6xreWdx8" target="_blank">عرض</a></td><td></td></tr>
-    </table>
-    <br>
-    <h3>إضافة أو حذف موقع</h3>
-    <form id="accessForm">
-        <label>اسم المستخدم:</label>
-        <input type="text" id="username" required><br>
-        <label>كلمة المرور:</label>
-        <input type="password" id="password" required><br>
-        <label>اسم البقالة:</label>
-        <input type="text" id="storeName"><br>
-        <label>العنوان:</label>
-        <input type="text" id="address"><br>
-        <label>رابط الخريطة:</label>
-        <input type="url" id="mapLink"><br>
-        <button type="submit">إضافة</button>
-    </form>
+    <div class="container">
+        <h2>نقاط البيع - Miitoo</h2>
+        
+        <table id="locationsTable">
+            <thead>
+                <tr>
+                    <th>اسم البقالة</th>
+                    <th>العنوان</th>
+                    <th>العرض على الخريطة</th>
+                    <th>الإجراءات</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- البيانات الحالية -->
+                <tr>
+                    <td>هاي كلاس</td>
+                    <td>الحي الراقي</td>
+                    <td><a class="map-link" href="https://maps.app.goo.gl/ZZqUdfhTcsYVR18YA" target="_blank">عرض الخريطة</a></td>
+                    <td><button class="remove">حذف</button></td>
+                </tr>
+                <!-- باقي الصفوف -->
+            </tbody>
+        </table>
+
+        <h3>إدارة المواقع</h3>
+        <form id="accessForm">
+            <div class="form-group">
+                <label for="username">اسم المستخدم:</label>
+                <input type="text" id="username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">كلمة المرور:</label>
+                <input type="password" id="password" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="storeName">اسم البقالة:</label>
+                <input type="text" id="storeName" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="address">العنوان:</label>
+                <input type="text" id="address" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="mapLink">رابط الخريطة:</label>
+                <input type="url" id="mapLink" required>
+            </div>
+            
+            <button type="submit">إضافة موقع جديد</button>
+        </form>
+    </div>
+
     <script>
-        const validUsername = "miitooAdmin2025";
-        const validPassword = "securePass@321";document.querySelectorAll("#locationsTable tr").forEach((row, index) => {
-        if (index === 0) return;
-        let removeCell = row.insertCell();
-        let btn = document.createElement("button");
-        btn.textContent = "X";
-        btn.className = "remove";
-        btn.onclick = () => {
-            const enteredUser = prompt("ادخل اسم المستخدم:");
-            const enteredPass = prompt("ادخل كلمة المرور:");
-            if (enteredUser === validUsername && enteredPass === validPassword) {
-                row.remove();
-            } else {
-                alert("بيانات الدخول غير صحيحة!");
-            }
-        };
-        removeCell.appendChild(btn);
-    });
+        (function() {
+            const credentials = {
+                username: "miitooAdmin2025",
+                password: "securePass@321"
+            };
 
-    document.getElementById("accessForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-        let username = document.getElementById("username").value;
-        let password = document.getElementById("password").value;
-        if (username === validUsername && password === validPassword) {
-            let storeName = document.getElementById("storeName").value;
-            let address = document.getElementById("address").value;
-            let mapLink = document.getElementById("mapLink").value;
-            if (storeName && address && mapLink) {
-                let table = document.getElementById("locationsTable");
-                let newRow = table.insertRow();
-                newRow.innerHTML = `<td>${storeName}</td><td>${address}</td><td><a href="${mapLink}" target="_blank">عرض</a></td><td></td>`;
-                let btn = document.createElement("button");
-                btn.textContent = "X";
-                btn.className = "remove";
-                btn.onclick = () => {
-                    const enteredUser = prompt("ادخل اسم المستخدم:");
-                    const enteredPass = prompt("ادخل كلمة المرور:");
-                    if (enteredUser === validUsername && enteredPass === validPassword) {
-                        newRow.remove();
+            function validateAuth() {
+                const user = prompt("اسم المستخدم:");
+                const pass = prompt("كلمة المرور:");
+                return user === credentials.username && pass === credentials.password;
+            }
+
+            function addDeleteHandler(btn, row) {
+                btn.addEventListener('click', function() {
+                    if(validateAuth()) {
+                        row.remove();
+                        alert("تم الحذف بنجاح");
                     } else {
-                        alert("بيانات الدخول غير صحيحة!");
+                        alert("معلومات الاعتماد غير صحيحة!");
                     }
-                };
-                newRow.cells[3].appendChild(btn);
-                alert("تمت الإضافة بنجاح!");
-            } else {
-                alert("يرجى تعبئة جميع الحقول.");
+                });
             }
-        } else {
-            alert("بيانات الدخول غير صحيحة!");
-        }
-    });
-</script>
 
+            // إضافة أزرار الحذف للصفوف الموجودة
+            document.querySelectorAll('#locationsTable tbody tr').forEach(row => {
+                const btn = row.querySelector('.remove');
+                addDeleteHandler(btn, row);
+            });
+
+            // معالجة إضافة مواقع جديدة
+            document.getElementById('accessForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if(!validateAuth()) {
+                    alert("بيانات الاعتماد غير صحيحة!");
+                    return;
+                }
+
+                const storeName = document.getElementById('storeName').value.trim();
+                const address = document.getElementById('address').value.trim();
+                const mapLink = document.getElementById('mapLink').value.trim();
+
+                if(!storeName || !address || !mapLink) {
+                    alert("يرجى ملء جميع الحقول المطلوبة");
+                    return;
+                }
+
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td>${storeName}</td>
+                    <td>${address}</td>
+                    <td><a class="map-link" href="${mapLink}" target="_blank">عرض الخريطة</a></td>
+                    <td><button class="remove">حذف</button></td>
+                `;
+
+                addDeleteHandler(newRow.querySelector('.remove'), newRow);
+                document.querySelector('#locationsTable tbody').appendChild(newRow);
+                this.reset();
+                alert("تمت الإضافة بنجاح!");
+            });
+        })();
+    </script>
 </body>
 </html>
