@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miitoo - نقاط البيع</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-snowflake logo-icon"></i>
+                <h1>Miitoo</h1>
+            </div>
+            <h2>نقاط البيع الرسمية</h2>
+        </header>
+        
+        <div class="admin-panel-access">
+            <button id="adminLoginBtn" class="admin-btn">
+                <i class="fas fa-lock"></i>
+                <span>الدخول إلى لوحة التحكم</span>
+            </button>
+        </div>
+
+        <div class="locations-container">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="ابحث عن نقطة بيع...">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+            
+            <div class="table-responsive">
+                <table id="locationsTable">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-store"></i> اسم البقالة</th>
+                            <th><i class="fas fa-map-marker-alt"></i> العنوان</th>
+                            <th><i class="fas fa-map"></i> العرض على الخريطة</th>
+                            <th><i class="fas fa-cog"></i> الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- سيتم تعبئة البيانات تلقائيا -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div id="noResults" class="no-results" style="display: none;">
+                <i class="fas fa-search"></i>
+                <p>لا توجد نتائج مطابقة للبحث</p>
+            </div>
+        </div>
+
+        <div id="managementSection" class="management-section">
+            <h3><i class="fas fa-cogs"></i> إدارة نقاط البيع</h3>
+            <form id="accessForm" class="location-form">
+                <div class="form-group">
+                    <label for="storeName"><i class="fas fa-store"></i> اسم البقالة:</label>
+                    <input type="text" id="storeName" required placeholder="أدخل اسم البقالة">
+                </div>
+                
+                <div class="form-group">
+                    <label for="address"><i class="fas fa-map-marker-alt"></i> العنوان:</label>
+                    <input type="text" id="address" required placeholder="أدخل العنوان التفصيلي">
+                </div>
+                
+                <div class="form-group">
+                    <label for="mapLink"><i class="fas fa-map"></i> رابط الخريطة:</label>
+                    <input type="url" id="mapLink" required placeholder="أدخل رابط Google Maps">
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>إضافة موقع جديد</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>جميع الحقوق محفوظة &copy; <span id="currentYear"></span> Miitoo - أكواب الثلج</p>
+            <div class="social-links">
+                <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal for confirmation -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> تأكيد الحذف</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>هل أنت متأكد من حذف هذا الموقع؟</p>
+                <p class="warning-text">لا يمكن التراجع عن هذه العملية!</p>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelDelete" class="btn-cancel">إلغاء</button>
+                <button id="confirmDelete" class="btn-delete">تأكيد الحذف</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
