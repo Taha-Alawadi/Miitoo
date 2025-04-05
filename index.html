@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miitoo - نقاط البيع الرسمية لأكواب الثلج</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="card-styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- حاوية تأثير الثلج -->
+    <div class="snow-container" id="snowContainer"></div>
+
+    <div class="container">
+        <!-- زر تبديل الوضع المظلم/الفاتح -->
+        <button id="themeToggle" class="theme-toggle" aria-label="تبديل الوضع المظلم/الفاتح">
+            <i class="fas fa-moon"></i>
+        </button>
+
+        <header>
+            <div class="logo">
+                <div class="logo-container">
+                    <i class="fas fa-snowflake logo-icon"></i>
+                    <h1>Miitoo</h1>
+                </div>
+            </div>
+            <h2>نقاط البيع الرسمية لأكواب الثلج</h2>
+        </header>
+        
+        <div class="admin-panel-access">
+            <button id="adminLoginBtn" class="admin-btn">
+                <i class="fas fa-lock"></i>
+                <span>الدخول إلى لوحة التحكم</span>
+            </button>
+        </div>
+
+        <div class="locations-container">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="ابحث عن نقطة بيع بالاسم أو العنوان...">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+            
+            <!-- أزرار تبديل طريقة العرض -->
+            <div class="view-toggle">
+                <button id="cardViewBtn" class="view-btn active">
+                    <i class="fas fa-th"></i> عرض البطاقات
+                </button>
+                <button id="tableViewBtn" class="view-btn">
+                    <i class="fas fa-list"></i> عرض الجدول
+                </button>
+                <button id="mapViewBtn" class="view-btn">
+                    <i class="fas fa-map-marked-alt"></i> عرض الخريطة
+                </button>
+            </div>
+            
+            <!-- عرض البطاقات (الافتراضي) -->
+            <div id="cardView" class="card-container"></div>
+            
+            <!-- عرض الجدول -->
+            <div id="tableView" class="table-view">
+                <div class="table-responsive">
+                    <table id="locationsTable">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-store"></i> اسم البقالة</th>
+                                <th><i class="fas fa-map-marker-alt"></i> العنوان</th>
+                                <th><i class="fas fa-map"></i> العرض على الخريطة</th>
+                                <th><i class="fas fa-cog"></i> الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- سيتم تعبئة البيانات تلقائيا -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- عرض الخريطة -->
+            <div id="mapView" class="map-view" style="display: none;">
+                <div id="mapContainer" class="map-container">
+                    <!-- سيتم تحميل الخريطة هنا -->
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- رسالة عدم وجود نتائج -->
+            <div id="noResults" class="no-results" style="display: none;">
+                <i class="fas fa-search"></i>
+                <p>لا توجد نتائج مطابقة للبحث</p>
+                <button class="search-again" id="clearSearch">
+                    <span>مسح البحث</span>
+                    <i class="fas fa-times-circle"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- قسم الإدارة -->
+        <div id="managementSection" class="management-section">
+            <h3><i class="fas fa-cogs"></i> إدارة نقاط البيع</h3>
+            <form id="accessForm" class="location-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="storeName"><i class="fas fa-store"></i> اسم البقالة:</label>
+                        <input type="text" id="storeName" required placeholder="أدخل اسم البقالة">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address"><i class="fas fa-map-marker-alt"></i> العنوان:</label>
+                        <input type="text" id="address" required placeholder="أدخل العنوان التفصيلي">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="mapLink"><i class="fas fa-map"></i> رابط الخريطة:</label>
+                    <input type="url" id="mapLink" required placeholder="أدخل رابط Google Maps">
+                </div>
+                
+
+                
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>إضافة موقع جديد</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>جميع الحقوق محفوظة &copy; <span id="currentYear"></span> Miitoo - أكواب الثلج النقية</p>
+            <div class="social-links">
+                <a href="https://www.instagram.com/miitoo_pure_ice_cup?igsh=NDk2ZHZvZzFxbmVz" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- نافذة تأكيد الحذف -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> تأكيد الحذف</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>هل أنت متأكد من حذف هذا الموقع؟</p>
+                <p class="warning-text">لا يمكن التراجع عن هذه العملية!</p>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelDelete" class="btn-cancel">
+                    <i class="fas fa-times"></i> إلغاء
+                </button>
+                <button id="confirmDelete" class="btn-delete">
+                    <i class="fas fa-trash-alt"></i> تأكيد الحذف
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- نافذة عرض الخريطة -->
+    <div id="mapModal" class="modal map-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-map-marked-alt"></i> <span id="mapModalTitle">عرض الموقع</span></h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="map-container" id="modalMapContainer"></div>
+        </div>
+    </div>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+    <script src="script.js"></script>
+</body>
+</html>
